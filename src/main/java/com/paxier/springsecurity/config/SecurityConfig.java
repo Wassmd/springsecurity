@@ -1,6 +1,5 @@
 package com.paxier.springsecurity.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -58,7 +56,13 @@ public class SecurityConfig {
 //        http.authorizeHttpRequests(custHttp);
 
         //Lambda way of configuring
-        http.authorizeHttpRequests(request -> request.anyRequest().authenticated())
+        http.authorizeHttpRequests(request ->
+                        request
+                                .requestMatchers("/api/users/register","/api/users/login")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
+                )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable);

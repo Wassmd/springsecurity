@@ -5,3 +5,6 @@ spring:
     password: myspringboot
   jpa:
     open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
