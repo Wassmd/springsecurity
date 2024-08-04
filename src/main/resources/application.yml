@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5442/my_springboot_db?ApplicationName=myspringboot
+    username: myspringboot
+    password: myspringboot
+  jpa:
+    open-in-view: false
