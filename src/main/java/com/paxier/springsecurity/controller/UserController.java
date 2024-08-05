@@ -1,7 +1,7 @@
 package com.paxier.springsecurity.controller;
 
 import com.nimbusds.jose.JOSEException;
-import com.paxier.springsecurity.component.JwtProvider;
+import com.paxier.springsecurity.jwt.JwtProvider;
 import com.paxier.springsecurity.entity.UserEntity;
 import com.paxier.springsecurity.service.UserService;
 import org.springframework.http.ResponseEntity;
