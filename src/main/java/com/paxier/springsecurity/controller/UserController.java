@@ -1,5 +1,7 @@
 package com.paxier.springsecurity.controller;
 
+import com.nimbusds.jose.JOSEException;
+import com.paxier.springsecurity.component.JwtProvider;
 import com.paxier.springsecurity.entity.UserEntity;
 import com.paxier.springsecurity.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +16,17 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
 
-    public UserController(UserService userService, AuthenticationManager authenticationManager) {
+    public UserController(
+            UserService userService,
+            AuthenticationManager authenticationManager,
+            JwtProvider jwtProvider) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
+        this.jwtProvider = jwtProvider;
     }
 
     @PostMapping("/register")
@@ -30,11 +37,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserEntity user) {
+    public ResponseEntity<String> login(@RequestBody UserEntity user) throws JOSEException {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         if (!authentication.isAuthenticated()) {
             return ResponseEntity.ok("Login failed");
         }
-        return ResponseEntity.ok("Login successful");
+        return ResponseEntity.ok(jwtProvider.generateToken(user.getUsername()).serialize());
     }
 }
