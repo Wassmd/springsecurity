@@ -24,6 +24,7 @@ public class JwtProvider {
                 new JWSHeader(JWSAlgorithm.HS256),
                 new JWTClaimsSet.Builder()
                         .jwtID(UUID.randomUUID().toString())
+                        .subject(username)
                         .claim("username", username)
                         .issuer("paxier")
                         .issueTime(new Date(System.currentTimeMillis()))
