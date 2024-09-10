@@ -60,8 +60,7 @@ public class SecurityConfig {
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request ->
                         request
-                                .requestMatchers("/api/users/register", "/api/users/login")
-                                .permitAll()
+                                .requestMatchers("/api/users/register", "/api/users/login", "/api/qualifier/**").permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
